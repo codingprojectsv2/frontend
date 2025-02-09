@@ -1,3 +1,7 @@
+<script setup>
+import { ext_resources } from '@/config/extresources';
+</script>
+
 <template>
   <div class="flex h-screen bg-gray-900 text-white">
     <!-- Sidebar -->
@@ -12,8 +16,10 @@
           <li><a href="https://codingprojects.ru/insider/market" class="block py-2 px-3 rounded hover:bg-gray-700">Магазин</a></li>
         </ul>
       </nav>
-      <div class="mt-auto" v-for="resource in ext_resources">
-        <a href="{{ resource.link }}" target="_blank" class="block text-sm hover:text-gray-400">{{ resource.name }}</a>
+      <div class="mt-auto">
+        <ul v-for="resource in ext_resources">
+          <a :href="resource.link" target="_blank" class="block text-sm hover:text-gray-400">{{ resource.name }}</a>
+        </ul>
       </div>
     </div>
     
@@ -45,7 +51,6 @@
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { Bars3Icon } from '@heroicons/vue/24/outline';
-import { ext_resources } from '@/config/extresources';
 
 export default {
   components: {

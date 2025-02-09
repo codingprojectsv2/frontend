@@ -4,6 +4,6 @@ interface ExtResources {
 }
 
 export const ext_resources: ExtResources[] = [
-  { name: "pasta", link: "pasta.example.com" },
-  {name: "storage", link: "storage.example.com"},
+  { name: "pasta", link: "https://pasta.example.com" },
+  {name: "storage", link: "https://storage.example.com"},
 ];
