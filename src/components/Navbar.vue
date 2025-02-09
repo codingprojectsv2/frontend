@@ -1,91 +1,68 @@
 <template>
-  <Disclosure as="nav" class="bg-gray-800 dark:bg-gray-900" v-slot="{ open }">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="shrink-0">
-            <img
-              class="size-8"
-              src="https://codingprojects.ru/images/icons/icons8-idea-64.png"
-              alt="Your Company"
-            />
-          </div>
-
-          <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
-              <a
-                v-for="item in $navbar_buttons"
-                :key="item.name"
-                :href="item.href"
-                :class="[
-                  item.current
-                    ? 'bg-gray-900 text-white dark:bg-gray-700'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white',
-                  'rounded-md px-3 py-2 text-sm font-medium',
-                ]"
-                :aria-current="item.current ? 'page' : undefined"
-              >
-                {{ item.name }}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="hidden md:flex items-center space-x-4">
-          <!-- Profile dropdown -->
-          <Menu as="div" class="relative">
-            <div>
-              <MenuButton
-                class="relative flex max-w-xs items-center rounded-full bg-gray-800 dark:bg-gray-700 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span class="sr-only">Open user menu</span>
-                <img class="size-8 rounded-full" :src="user.imageUrl" alt="" />
-              </MenuButton>
-            </div>
-            <transition
-              enter-active-class="transition ease-out duration-100"
-              enter-from-class="transform opacity-0 scale-95"
-              enter-to-class="transform opacity-100 scale-100"
-              leave-active-class="transition ease-in duration-75"
-              leave-from-class="transform opacity-100 scale-100"
-              leave-to-class="transform opacity-0 scale-95"
-            >
-              <MenuItems
-                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 ring-1 shadow-lg ring-black/5"
-              >
-                <MenuItem
-                  v-for="item in $user_links"
-                  :key="item.name"
-                  v-slot="{ active }"
-                >
-                  <a
-                    :href="item.href"
-                    :class="[
-                      active ? 'bg-gray-100 dark:bg-gray-700' : '',
-                      'block px-4 py-2 text-sm text-gray-700 dark:text-gray-300',
-                    ]"
-                  >
-                    {{ item.name }}
-                  </a>
-                </MenuItem>
-              </MenuItems>
-            </transition>
-          </Menu>
-        </div>
+  <div class="flex h-screen bg-gray-900 text-white">
+    <!-- Sidebar -->
+    <div class="hidden lg:flex flex-col w-64 bg-gray-800 p-4 relief_bg">
+      <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold">
+        <img src="https://codingprojects.ru/images/icons/icons8-idea-64.png" alt="Logo" class="h-8">
+        <span>GeekClass</span>
+      </a>
+      <nav class="mt-4">
+        <ul class="space-y-2">
+          <li><a href="https://codingprojects.ru/insider/courses" class="block py-2 px-3 rounded hover:bg-gray-700">Мои курсы</a></li>
+          <li><a href="https://codingprojects.ru/insider/market" class="block py-2 px-3 rounded hover:bg-gray-700">Магазин</a></li>
+        </ul>
+      </nav>
+      <div class="mt-auto" v-for="resource in ext_resources">
+        <a href="{{ resource.link }}" target="_blank" class="block text-sm hover:text-gray-400">{{ resource.name }}</a>
       </div>
     </div>
-  </Disclosure>
+    
+    <!-- Mobile Menu -->
+    <div class="lg:hidden w-full">
+      <Disclosure as="nav" class="bg-gray-800 shadow-md relief_bg_mobile">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16 items-center">
+            <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold">
+              <img src="https://codingprojects.ru/images/icons/icons8-idea-64.png" alt="Logo" class="h-8">
+              <span>GeekClass</span>
+            </a>
+            <DisclosureButton class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-700 focus:outline-none">
+              <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+            </DisclosureButton>
+          </div>
+        </div>
+        <DisclosurePanel class="lg:hidden bg-gray-900 p-2">
+          <nav class="space-y-2">
+            <a href="https://codingprojects.ru/insider/courses" class="block py-2 px-3 rounded hover:bg-gray-700">Мои курсы</a>
+            <a href="https://codingprojects.ru/insider/market" class="block py-2 px-3 rounded hover:bg-gray-700">Магазин</a>
+          </nav>
+        </DisclosurePanel>
+      </Disclosure>
+    </div>
+  </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/vue/24/outline'
+<script>
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
+import { Bars3Icon } from '@heroicons/vue/24/outline';
+import { ext_resources } from '@/config/extresources';
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-
+export default {
+  components: {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Bars3Icon
+  }
+};
 </script>
+
+<style scoped>
+.relief_bg_mobile {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='351' height='292.5' viewBox='0 0 1080 900'%3E%3Cg fill-opacity='0.03'%3E%3Cpolygon fill='%23444' points='90 150 0 300 180 300'/%3E%3Cpolygon points='90 150 180 0 0 0'/%3E%3Cpolygon fill='%23AAA' points='270 150 360 0 180 0'/%3E%3Cpolygon fill='%23DDD' points='450 150 360 300 540 300'/%3E%3Cpolygon fill='%23999' points='450 150 540 0 360 0'/%3E%3Cpolygon points='630 150 540 300 720 300'/%3E%3Cpolygon fill='%23DDD' points='630 150 720 0 540 0'/%3E%3Cpolygon fill='%23444' points='810 150 720 300 900 300'/%3E%3Cpolygon fill='%23FFF' points='810 150 900 0 720 0'/%3E%3Cpolygon fill='%23DDD' points='990 150 900 300 1080 300'/%3E%3Cpolygon fill='%23444' points='990 150 1080 0 900 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+.relief_bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='351' height='292.5' viewBox='0 0 1080 900'%3E%3Cg fill-opacity='0.03'%3E%3Cpolygon fill='%23444' points='90 150 0 300 180 300'/%3E%3Cpolygon points='90 150 180 0 0 0'/%3E%3Cpolygon fill='%23AAA' points='270 150 360 0 180 0'/%3E%3Cpolygon fill='%23DDD' points='450 150 360 300 540 300'/%3E%3Cpolygon fill='%23999' points='450 150 540 0 360 0'/%3E%3Cpolygon points='630 150 540 300 720 300'/%3E%3Cpolygon fill='%23DDD' points='630 150 720 0 540 0'/%3E%3Cpolygon fill='%23444' points='810 150 720 300 900 300'/%3E%3Cpolygon fill='%23FFF' points='810 150 900 0 720 0'/%3E%3Cpolygon fill='%23DDD' points='990 150 900 300 1080 300'/%3E%3Cpolygon fill='%23444' points='990 150 1080 0 900 0'/%3E%3Cpolygon fill='%23DDD' points='90 450 0 600 180 600'/%3E%3Cpolygon points='90 450 180 300 0 300'/%3E%3Cpolygon fill='%23666' points='270 450 180 600 360 600'/%3E%3Cpolygon fill='%23AAA' points='270 450 360 300 180 300'/%3E%3Cpolygon fill='%23DDD' points='450 450 360 600 540 600'/%3E%3Cpolygon fill='%23999' points='450 450 540 300 360 300'/%3E%3Cpolygon fill='%23999' points='630 450 540 600 720 600'/%3E%3Cpolygon fill='%23FFF' points='630 450 720 300 540 300'/%3E%3Cpolygon points='810 450 720 600 900 600'/%3E%3Cpolygon fill='%23DDD' points='810 450 900 300 720 300'/%3E%3Cpolygon fill='%23AAA' points='990 450 900 600 1080 600'/%3E%3Cpolygon fill='%23444' points='990 450 1080 300 900 300'/%3E%3Cpolygon fill='%23222' points='90 750 0 900 180 900'/%3E%3Cpolygon points='270 750 180 900 360 900'/%3E%3Cpolygon fill='%23DDD' points='270 750 360 600 180 600'/%3E%3Cpolygon points='450 750 540 600 360 600'/%3E%3Cpolygon points='630 750 540 900 720 900'/%3E%3Cpolygon fill='%23444' points='630 750 720 600 540 600'/%3E%3Cpolygon fill='%23AAA' points='810 750 720 900 900 900'/%3E%3Cpolygon fill='%23666' points='810 750 900 600 720 600'/%3E%3Cpolygon fill='%23999' points='990 750 900 900 1080 900'/%3E%3Cpolygon fill='%23999' points='180 0 90 150 270 150'/%3E%3Cpolygon fill='%23444' points='360 0 270 150 450 150'/%3E%3Cpolygon fill='%23FFF' points='540 0 450 150 630 150'/%3E%3Cpolygon points='900 0 810 150 990 150'/%3E%3Cpolygon fill='%23222' points='0 300 -90 450 90 450'/%3E%3Cpolygon fill='%23FFF' points='0 300 90 150 -90 150'/%3E%3Cpolygon fill='%23FFF' points='180 300 90 450 270 450'/%3E%3Cpolygon fill='%23666' points='180 300 270 150 90 150'/%3E%3Cpolygon fill='%23222' points='360 300 270 450 450 450'/%3E%3Cpolygon fill='%23FFF' points='360 300 450 150 270 150'/%3E%3Cpolygon fill='%23444' points='540 300 450 450 630 450'/%3E%3Cpolygon fill='%23222' points='540 300 630 150 450 150'/%3E%3Cpolygon fill='%23AAA' points='720 300 630 450 810 450'/%3E%3Cpolygon fill='%23666' points='720 300 810 150 630 150'/%3E%3Cpolygon fill='%23FFF' points='900 300 810 450 990 450'/%3E%3Cpolygon fill='%23999' points='900 300 990 150 810 150'/%3E%3Cpolygon points='0 600 -90 750 90 750'/%3E%3Cpolygon fill='%23666' points='0 600 90 450 -90 450'/%3E%3Cpolygon fill='%23AAA' points='180 600 90 750 270 750'/%3E%3Cpolygon fill='%23444' points='180 600 270 450 90 450'/%3E%3Cpolygon fill='%23444' points='360 600 270 750 450 750'/%3E%3Cpolygon fill='%23999' points='360 600 450 450 270 450'/%3E%3Cpolygon fill='%23666' points='540 600 630 450 450 450'/%3E%3Cpolygon fill='%23222' points='720 600 630 750 810 750'/%3E%3Cpolygon fill='%23FFF' points='900 600 810 750 990 750'/%3E%3Cpolygon fill='%23222' points='900 600 990 450 810 450'/%3E%3Cpolygon fill='%23DDD' points='0 900 90 750 -90 750'/%3E%3Cpolygon fill='%23444' points='180 900 270 750 90 750'/%3E%3Cpolygon fill='%23FFF' points='360 900 450 750 270 750'/%3E%3Cpolygon fill='%23AAA' points='540 900 630 750 450 750'/%3E%3Cpolygon fill='%23FFF' points='720 900 810 750 630 750'/%3E%3Cpolygon fill='%23222' points='900 900 990 750 810 750'/%3E%3Cpolygon fill='%23222' points='1080 300 990 450 1170 450'/%3E%3Cpolygon fill='%23FFF' points='1080 300 1170 150 990 150'/%3E%3Cpolygon points='1080 600 990 750 1170 750'/%3E%3Cpolygon fill='%23666' points='1080 600 1170 450 990 450'/%3E%3Cpolygon fill='%23DDD' points='1080 900 1170 750 990 750'/%3E%3C/g%3E%3C/svg%3E");
+  }
+</style>
+
