@@ -6,9 +6,9 @@ import { ext_resources, in_resources } from '@/config/extresources';
   <div class="flex h-screen bg-gray-900 text-white">
     <!-- Sidebar -->
     <div class="hidden lg:flex flex-col w-64 bg-gray-800 p-4 relief_bg">
-      <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold mb-12">
+      <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold mb-8">
         <img src="https://codingprojects.ru/images/icons/icons8-idea-64.png" alt="Logo" class="h-8">
-        <span>GeekClass</span>
+        <span>{{ $project_name }}</span>
       </a>
       <nav class="mt-4">
         <ul class="space-y-2" v-for="resource in in_resources">
@@ -16,11 +16,11 @@ import { ext_resources, in_resources } from '@/config/extresources';
               class="block py-2 px-3 rounded hover:bg-gray-700">{{ resource.name }}</a></li>
         </ul>
       </nav>
-      <hr class="border border-white/10 mb-6 mt-6">
+      <hr class="border border-white/10 mb-5 mt-6">
       <div class="lg:flex flex-col w-64 p-4 text-white/50">
-        <span class="text-small">Ресурсы</span>
-        <ul v-for="resource in ext_resources">
-          <a :href="resource.link" target="_blank" class="block text-sm hover:text-gray-400">{{ resource.name }}</a>
+        <span class="text-small mb-2">Ресурсы</span>
+        <ul v-for="resource in ext_resources" class="mb-1 text-gray/50">
+          <a :href="resource.link" target="_blank" class="block text-sm hover:text-gray-300">{{ resource.name }}</a>
         </ul>
       </div>
     </div>
