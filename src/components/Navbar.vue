@@ -32,7 +32,7 @@ import { ext_resources, in_resources } from '@/config/extresources';
           <div class="flex justify-between h-16 items-center">
             <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold">
               <img src="https://codingprojects.ru/images/icons/icons8-idea-64.png" alt="Logo" class="h-8">
-              <span>GeekClass</span>
+              <span>{{ $project_name }}</span>
             </a>
             <DisclosureButton
               class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-700 focus:outline-none">
@@ -42,10 +42,7 @@ import { ext_resources, in_resources } from '@/config/extresources';
         </div>
         <DisclosurePanel class="lg:hidden bg-gray-900 p-2">
           <nav class="space-y-2">
-            <a href="https://codingprojects.ru/insider/courses" class="block py-2 px-3 rounded hover:bg-gray-700">Мои
-              курсы</a>
-            <a href="https://codingprojects.ru/insider/market"
-              class="block py-2 px-3 rounded hover:bg-gray-700">Магазин</a>
+            <a v-for="resource in in_resources" :href="resource.link" class="block py-2 px-3 rounded hover:bg-gray-700">{{ resource.name }}</a>
           </nav>
         </DisclosurePanel>
       </Disclosure>
