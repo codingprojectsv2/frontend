@@ -3,9 +3,9 @@ import { ext_resources, in_resources } from '@/config/extresources';
 </script>
 
 <template>
-  <div class="flex h-screen bg-gray-900 text-white">
+  <div class="flex bg-gray-900 text-white">
     <!-- Sidebar -->
-    <div class="hidden lg:flex flex-col w-64 bg-gray-800 p-4 relief_bg">
+    <div class="hidden lg:flex flex-col w-64 bg-gray-800 p-4 relief_bg h-screen">
       <a href="https://codingprojects.ru" class="flex items-center space-x-2 text-lg font-semibold mb-8">
         <img src="https://codingprojects.ru/images/icons/icons8-idea-64.png" alt="Logo" class="h-8">
         <span>{{ $project_name }}</span>
